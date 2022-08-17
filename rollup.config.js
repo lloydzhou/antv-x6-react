@@ -7,14 +7,20 @@ import typescript from '@rollup/plugin-typescript'
 
 export default {
   input: './src/lib/index.ts',
-  input: [
+  output: [
     {
       name: 'x6-react',
       format: 'umd',
       file: 'dist/index.js',
       sourcemap: true,
+      globals: {
+        react: 'React',
+        'react-dom': 'ReactDom',
+        '@antv/x6': 'X6',
+      },
     }
   ],
+  external: ['@antv/x6', 'react', 'react-dom'],
   plugins: [
     typescript({ declaration: false }),
     resolve(),
