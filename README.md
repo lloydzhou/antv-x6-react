@@ -1,4 +1,5 @@
 # antv-x6-react
+React components for building x6 editors
 
 > 参照[lloydzhou/antv-x6-vue](https://github.com/lloydzhou/antv-x6-vue)实现组件抽象
 
