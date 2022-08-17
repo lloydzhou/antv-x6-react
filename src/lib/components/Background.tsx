@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect } from 'react';
 /** Context */
 import GraphContext from '../GraphContext';
@@ -26,7 +25,9 @@ export const Background: React.FC<BackgroundProps> = (props) => {
     const options = mergeOption(defaultOptions, {...props, enabled: props.enabled !== false})
     graph.clearBackground()
     graph.drawBackground(options)
-    return () => graph.clearBackground()
+    return () => {
+      graph.clearBackground()
+    }
   }, [props, graph])
   return null
 }

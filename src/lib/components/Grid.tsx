@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect } from 'react';
 /** Context */
 import GraphContext from '../GraphContext';
@@ -26,10 +25,11 @@ export const Grid: React.FC<GridProps> = (props) => {
   const { graph } = React.useContext(GraphContext);
   useEffect(() => {
     const options = mergeOption(defaultOptions, {...props})
-    console.log('options', options)
     graph.hideGrid()
     graph.drawGrid(options)
-    return () => graph.clearGrid()
+    return () => {
+      graph.clearGrid()
+    }
   }, [props, graph])
   return null
 }

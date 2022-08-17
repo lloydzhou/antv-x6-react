@@ -12,8 +12,8 @@ import Keyboard from './components/Keyboard'
 import MouseWheel from './components/MouseWheel'
 import Connecting from './components/Connecting'
 
-// import Widgets from './widgets'
-// const { Snapline, Selection, MiniMap, Stencil, StencilGroup, ContextMenu, useContextMenu } = Widgets
+import Widgets from './widgets'
+const { Snapline, Selection, MiniMap, Stencil, StencilGroup, ContextMenu, useContextMenu } = Widgets
 
 export {
   Graph,
@@ -29,16 +29,16 @@ export {
   Grid,
   Background,
   Clipboard,
-  // Selection,
+  Selection,
   Scroller,
   Keyboard,
   MouseWheel,
   Connecting,
-  // Widgets,
-  // MiniMap,
-  // Snapline,
-  // Stencil, StencilGroup,
-  // ContextMenu, useContextMenu,
+  Widgets,
+  MiniMap,
+  Snapline,
+  Stencil, StencilGroup,
+  ContextMenu, useContextMenu,
   // Port, PortGroup,
 }
 

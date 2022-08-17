@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect } from 'react';
 import { Graph } from '@antv/x6'
 /** Context */
@@ -26,7 +25,9 @@ export const Keyboard: React.FC<KeyboardProps> = (props) => {
       graph.enableKeyboard()
     }
 
-    return () => graph.disableKeyboard()
+    return () => {
+      graph.disableKeyboard()
+    }
   }, [graph, enabled])
   return null
 }

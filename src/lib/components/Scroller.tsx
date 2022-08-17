@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect } from 'react';
 /** Context */
 import GraphContext from '../GraphContext';

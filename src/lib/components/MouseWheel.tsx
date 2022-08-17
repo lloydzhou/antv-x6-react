@@ -1,5 +1,5 @@
-// @ts-nocheck
 import React, { useEffect } from 'react';
+import { Graph } from '@antv/x6'
 /** Context */
 import GraphContext from '../GraphContext';
 import { mergeOption } from '../utils'
@@ -35,7 +35,9 @@ export const MouseWheel: React.FC<MouseWheelProps> = (props) => {
     graph.options.mousewheel = mousewheel
     graph.enableMouseWheel()
 
-    return () => graph.disableMouseWheel()
+    return () => {
+      graph.disableMouseWheel()
+    }
   }, [props, graph])
   return null
 }
