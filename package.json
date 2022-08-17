@@ -1,17 +1,31 @@
 {
   "name": "antv-x6-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "files": [
     "dist",
     "es",
     "lib"
   ],
+  "keywords": [
+    "antv",
+    "x6",
+    "graph",
+    "svg",
+    "react"
+  ],
   "main": "lib/index.js",
   "module": "lib/index.js",
   "unpkg": "dist/index.js",
   "jsdelivr": "dist/index.js",
-  "dependencies": {
+  "peerDependencies": {
+    "@antv/x6": "^1.33.1"
+  },
+  "devDependencies": {
     "@antv/x6": "^1.33.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/plugin-typescript": "^8.2.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -19,25 +33,21 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "install-peers-cli": "^2.2.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
-    "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-replace": "^3.0.0",
-    "@rollup/plugin-typescript": "^8.2.5",
     "rollup": "^2.56.3",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-filesize": "^9.1.1",
     "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-progress": "^1.1.2",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "prepare": "install-peers",
     "start": "react-scripts start",
     "build": "yarn build:esm && yarn build:cjs && yarn build:umd",
     "build:esm": "tsc --module esnext --target es2015 --outDir ./es",
@@ -46,6 +56,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "author": "lloydzhou",
   "license": "MIT",
   "homepage": "https://github.com/lloydzhou/antv-x6-react",
   "repository": {
@@ -68,6 +79,15 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "vue-cli-service lint",
+      "git add"
     ]
   }
 }
