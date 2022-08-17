@@ -4,7 +4,7 @@ import * as X6 from '@antv/x6'
 /** Context */
 import GraphContext, { GraphContextType } from './GraphContext';
 
-type GraphProps = {
+export interface GraphProps {
   children: React.ReactNode;
   width?: number;
   height?: number;
