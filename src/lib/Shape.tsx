@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Shape, Cell as BaseShape } from '@antv/x6'
 import GraphContext, { CellContext } from './GraphContext';
-import { HTML2Shape } from './html2'
+import { HTML2 } from './html2'
 import { Portal } from './portal'
 
 export const useCellEvent = (name, handler, options={}) => {
@@ -146,22 +146,23 @@ const Cell: React.FC = (props) => {
   </CellContext.Provider> : null
 }
 
-const HTML2: React.FC<{[key: string]: any}> = (props) => {
+const ReactNode: React.FC<{[key: string]: any}> = (props) => {
   const { children, component, primer='rect', ...otherProps } = props
   const Component = component ? component : () => children
-  // const { wrap } = useReactComponent()
   const wrap = Portal.wrap
   const [cell, context] = useCell(() => ({
     ...otherProps,
     primer,
+    // 使用Portal.wrap包裹一层变成mount + unmount模式
+    // 自动按照是否挂载PortalProvider自动选择是否使用Portal模式
     html: wrap(Component),
-  }), createShape.bind(null, HTML2Shape))
+  }), createShape.bind(null, HTML2.Node))
   return cell.current ? <CellContext.Provider value={context}>
     {component && children}
   </CellContext.Provider> : null
 }
 
-const Shapes = { Cell, HTML2 }
+const Shapes = { Cell, ReactNode }
 
 Object.keys(Shape).forEach(name => {
   const ShapeClass = Shape[name]

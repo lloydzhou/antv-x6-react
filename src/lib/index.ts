@@ -3,7 +3,7 @@ import Graph from './Graph'
 import * as GraphContext from './GraphContext'
 import Shape, { Node, Rect, Edge, Cell, useCell, useCellEvent } from './Shape'
 import { Portal } from './portal'
-import { HTML2View, HTML2Shape } from './html2'
+import { HTML2 } from './html2'
 // import VueShape, { useVueShape, VueShapeProps, TeleportContainer } from './VueShape'
 // import Port, { PortGroup } from './Port'
 import Grid from './components/Grid'
@@ -16,7 +16,8 @@ import Connecting from './components/Connecting'
 
 import Widgets from './widgets'
 const { Snapline, Selection, MiniMap, Stencil, StencilGroup, ContextMenu, useContextMenu } = Widgets
-const { HTML2: ReactNode, HTML2 } = Shape
+const { ReactNode } = Shape
+const { View: HTML2View, Node: HTML2Shape } = HTML2
 
 export {
   Graph,
@@ -42,8 +43,8 @@ export {
   Snapline,
   Stencil, StencilGroup,
   ContextMenu, useContextMenu,
-  Portal, HTML2Shape, HTML2View,
-  ReactNode, HTML2,
+  Portal, HTML2, HTML2Shape, HTML2View,
+  ReactNode,
   // Port, PortGroup,
 }
 

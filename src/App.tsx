@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Menu } from 'antd'
 import './App.css';
+import 'antd/dist/antd.css';
 
 import Graph, { Grid, Background, Clipboard, Keyboard, MouseWheel, Connecting } from './lib'
 import { Node, Edge, ReactNode } from './lib'
