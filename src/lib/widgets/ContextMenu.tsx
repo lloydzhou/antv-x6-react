@@ -117,8 +117,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = (props) => {
     container,
   })
 
-  console.log('context', context)
-
   const { visible, x, y, item, onClose } = context
   const positionStyle = {
     position: 'absolute',
@@ -127,18 +125,18 @@ export const ContextMenu: React.FC<ContextMenuProps> = (props) => {
   };
   const id = item ? item.id : '';
   return (
-     <ContextMenuContext.Provider value={context}>
-       <div
-         ref={container}
-         className="x6-widget-contextmenu"
-         // @ts-ignore
-         style={{ ...defaultStyle, ...style, ...positionStyle }}
-         key={id}
-         onClick={e => onClose()}
-       >
-         {visible && children}
-       </div>
-     </ContextMenuContext.Provider>
+    <ContextMenuContext.Provider value={context}>
+      <div
+        ref={container}
+        className="x6-widget-contextmenu"
+        // @ts-ignore
+        style={{ ...defaultStyle, ...style, ...positionStyle }}
+        key={id}
+        onClick={e => onClose()}
+      >
+        {visible && children}
+      </div>
+    </ContextMenuContext.Provider>
   )
 }
 

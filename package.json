@@ -1,6 +1,6 @@
 {
   "name": "antv-x6-react",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "files": [
     "dist",
     "es",
@@ -33,6 +33,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "antd": "^4.22.6",
     "install-peers-cli": "^2.2.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

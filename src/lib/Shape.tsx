@@ -1,8 +1,9 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
 import { Shape, Cell as BaseShape } from '@antv/x6'
-/** Context */
 import GraphContext, { CellContext } from './GraphContext';
+import { HTML2Shape } from './html2'
+import { Portal } from './portal'
 
 export const useCellEvent = (name, handler, options={}) => {
   const { graph } = React.useContext(GraphContext);
@@ -12,7 +13,7 @@ export const useCellEvent = (name, handler, options={}) => {
     // 如果传了cell参数就使用cell_id判断一下触发事件的回调是不是对应到具体的元素上面
     const target = e.node || e.edge || e.cell || (e.view && e.view.cell)
     const target_id = target ? target.id : undefined
-    const cell_id = cell ? cell.value ? cell.value.id : cell.id : undefined
+    const cell_id = cell ? cell.current ? cell.current.id : cell.id : undefined
     // console.log('xhandler', target_id, '===', cell_id, name, e)
     if (target_id) {
       if (target_id === cell_id) {
@@ -140,12 +141,27 @@ const createShape = (Shape, props) => {
 const Cell: React.FC = (props) => {
   const { children, ...otherProps } = props
   const [cell, context] = useCell(() => otherProps, createShape.bind(null, BaseShape))
-  return cell.value ? <CellContext.Provider value={context}>
+  return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
 }
 
-const Shapes = {}
+const HTML2: React.FC<{[key: string]: any}> = (props) => {
+  const { children, component, primer='rect', ...otherProps } = props
+  const Component = component ? component : () => children
+  // const { wrap } = useReactComponent()
+  const wrap = Portal.wrap
+  const [cell, context] = useCell(() => ({
+    ...otherProps,
+    primer,
+    html: wrap(Component),
+  }), createShape.bind(null, HTML2Shape))
+  return cell.current ? <CellContext.Provider value={context}>
+    {component && children}
+  </CellContext.Provider> : null
+}
+
+const Shapes = { Cell, HTML2 }
 
 Object.keys(Shape).forEach(name => {
   const ShapeClass = Shape[name]
@@ -153,7 +169,7 @@ Object.keys(Shape).forEach(name => {
     const { shape: defaultShape } = ShapeClass.defaults || {}
     const { children, shape=defaultShape, ...otherProps } = props
     const [cell, context] = useCell(() => ({...otherProps, shape}), createShape.bind(null, ShapeClass))
-    return cell.value ? <CellContext.Provider value={context}>
+    return cell.current ? <CellContext.Provider value={context}>
       {children}
     </CellContext.Provider> : null
   }) as React.FC
@@ -169,5 +185,4 @@ export {
   Edge,
 }
 export default Shapes
-
 
