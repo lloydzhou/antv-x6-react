@@ -68,30 +68,45 @@ Contextmenu | 右键菜单
 ## [demo](https://github.com/lloydzhou/antv-x6-react/blob/master/src/App.tsx)
 ```jsx
 import Graph, { Grid, Background, Clipboard, Keyboard, MouseWheel, Connecting } from './lib'
-import { Node, Edge } from './lib'
-import { Selection, MiniMap, ContextMenu } from './lib'
+import { Node, Edge, ReactNode } from './lib'
+import { Selection, MiniMap, ContextMenu, Portal } from './lib'
+
+function Node1(props: any) {
+  const { node } = props
+  const [num, setNum] = React.useState(0)
+  React.useEffect(() => {
+    node.on('change:data', () => setNum(node.getData().num))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  return <Button onMouseDown={e => e.stopPropagation()} onClick={e => node.setData({ num: num + 1 })}>Ant Button {num}</Button>
+}
 
 function App() {
   return (
     <div className="App">
+      {/* 内部会自动判断，只要这个组件被挂载了就使用portal模式，否则使用ReactDOM */}
+      <PortalProvider />
       <Graph>
         <Grid />
         <Background />
         <Clipboard />
         <Keyboard />
         <MouseWheel />
-        <Connecting />
         <Selection />
-        <MiniMap />
+        <Connecting />
         <Node id="1" x="100" y="100" label="node1" />
         <Node id="2" x="200" y="200" label="node2" />
+        <ReactNode id="999" x="650" y="200" data={{num: 2}} component={Node1} />
+        <ReactNode id="99" x="500" y="200" data={{num: 2}} component={Node1} />
+        <ReactNode id="9" x="500" y="300" data={{num: 2}} component={Node1} primer="circle" />
         <Edge source="1" target="2" />
         <ContextMenu>
-          <ul style={{background: '#fff'}}>
-            <li><a>菜单1</a></li>
-            <li><a>菜单2</a></li>
-            <li><a>菜单3</a></li>
-          </ul>
+          <Menu style={{background: '#fff'}}>
+            <Menu.Item>菜单1</Menu.Item>
+            <Menu.Item>菜单2</Menu.Item>
+            <Menu.Item>菜单3</Menu.Item>
+          </Menu>
         </ContextMenu>
       </Graph>
     </div>
