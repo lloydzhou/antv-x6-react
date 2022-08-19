@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
-import { Shape, Cell as BaseShape } from '@antv/x6'
+import { Node as X6Node, Edge as X6Edge, Shape, Cell as BaseShape } from '@antv/x6'
 import GraphContext, { CellContext } from './GraphContext';
-import { HTML2 } from './html2'
+import './html2'
 import { Portal } from './portal'
 
 export const useCellEvent = (name, handler, options={}) => {
@@ -38,14 +38,15 @@ export const useCellEvent = (name, handler, options={}) => {
   return clear
 }
 
-export const useCell = (props, create) => {
+export const useCell = (props) => {
   // 这里如果传入的不是function就包裹一层
   const getProps = typeof props == 'function' ? props : () => props
   const { onAdded, onRemoved, onChange, ...otherProps } = getProps()
   const {
+    id, shape = 'rect',
     markup, attrs, zIndex, visible, data, parent: p,
     source, target, vertices, router, connector, labels,
-    x, y, width, height, angle, label, magnet, primer,
+    x, y, width, height, angle, label, magnet, primer, ...otherOptions
   } = otherProps
 
   const { graph } = React.useContext(GraphContext)
@@ -60,7 +61,21 @@ export const useCell = (props, create) => {
   const removed = (e) => onRemoved && onRemoved(e)
 
   useEffect(() => {
-    cell.current = create(otherProps)
+    // 从registry获取注册的类型，获取不到就使用Cell
+    const ShapeClass = X6Node.registry.get(shape) || X6Edge.registry.get(shape) || BaseShape
+    cell.current = new ShapeClass({
+      id, shape,
+      width: Number(width) || 160,
+      height: Number(height) || 40,
+      x: Number(x) || 0,
+      y: Number(y) || 0,
+      angle: Number(angle) || 0,
+      // 以下是前面展开的变量
+      markup, attrs, zIndex, visible, data, parent: p,
+      source, target, vertices, router, connector, labels,
+      label, magnet, primer,
+      ...otherOptions
+    })
     if (magnet === false || magnet === true) {
       cell.current.setAttrByPath(`${primer || cell.current.shape}/magnet`, !!magnet)
     }
@@ -93,7 +108,7 @@ export const useCell = (props, create) => {
   useEffect(() => { zIndex !== undefined && cell.current.setZIndex(zIndex) }, [zIndex, cell])
   useEffect(() => { visible !== undefined && cell.current.setVisible(visible) }, [visible, cell])
   useEffect(() => { data !== undefined && cell.current.setData(data) }, [data, cell])
-  useEffect(() => { p !== undefined && cell.current.setParent(p) }, [p, cell])
+  useEffect(() => { p !== undefined && cell.current.setProp('parent', p) }, [p, cell])
   // setSource和setTarget稍微有点区别
   useEffect(() => { source !== undefined && cell.current.setSource(typeof source === 'string' ? { cell: source } : source) }, [source, cell])
   useEffect(() => { target !== undefined && cell.current.setTarget(typeof target === 'string' ? { cell: target } : target) }, [target, cell])
@@ -125,22 +140,9 @@ export const useCell = (props, create) => {
   return [cell, context]
 }
 
-const createShape = (Shape, props) => {
-  const { id, shape, magnet, x, y, width, height, angle, ...otherOptions } = props
-  return new Shape({
-    id, shape,
-    width: Number(width) || 160,
-    height: Number(height) || 40,
-    x: Number(x) || 0,
-    y: Number(y) || 0,
-    angle: Number(angle) || 0,
-    ...otherOptions
-  })
-}
-
 const Cell: React.FC = (props) => {
   const { children, ...otherProps } = props
-  const [cell, context] = useCell(() => otherProps, createShape.bind(null, BaseShape))
+  const [cell, context] = useCell(() => otherProps)
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
@@ -152,11 +154,12 @@ const ReactNode: React.FC<{[key: string]: any}> = (props) => {
   const wrap = Portal.wrap
   const [cell, context] = useCell(() => ({
     ...otherProps,
+    shape: 'html2',
     primer,
     // 使用Portal.wrap包裹一层变成mount + unmount模式
     // 自动按照是否挂载PortalProvider自动选择是否使用Portal模式
     html: wrap(Component),
-  }), createShape.bind(null, HTML2.Node))
+  }))
   return cell.current ? <CellContext.Provider value={context}>
     {component && children}
   </CellContext.Provider> : null
@@ -169,7 +172,7 @@ Object.keys(Shape).forEach(name => {
   Shapes[name] = ((props) => {
     const { shape: defaultShape } = ShapeClass.defaults || {}
     const { children, shape=defaultShape, ...otherProps } = props
-    const [cell, context] = useCell(() => ({...otherProps, shape}), createShape.bind(null, ShapeClass))
+    const [cell, context] = useCell(() => ({...otherProps, shape}))
     return cell.current ? <CellContext.Provider value={context}>
       {children}
     </CellContext.Provider> : null
