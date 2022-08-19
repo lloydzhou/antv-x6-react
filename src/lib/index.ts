@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Graph from './Graph'
-import * as GraphContext from './GraphContext'
+import GraphContext, { CellContext, ContextMenuContext } from './GraphContext'
 import Shape, { Node, Rect, Edge, Cell, useCell, useCellEvent } from './Shape'
 import { Portal } from './portal'
 import { HTML2 } from './html2'
@@ -21,7 +21,7 @@ const { View: HTML2View, Node: HTML2Shape } = HTML2
 
 export {
   Graph,
-  GraphContext,
+  GraphContext, CellContext, ContextMenuContext,
   Shape,
   Node,
   Rect,

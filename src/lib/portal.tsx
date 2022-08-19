@@ -61,6 +61,7 @@ export namespace Portal {
   }
 
   export function wrap(ComponentClass: React.ElementType) {
+
     return {
       mount: async (props: any) => {
         const { graph, node, container } = props

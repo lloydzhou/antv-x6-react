@@ -39,9 +39,7 @@ export const useCellEvent = (name, handler, options={}) => {
 }
 
 export const useCell = (props) => {
-  // 这里如果传入的不是function就包裹一层
-  const getProps = typeof props == 'function' ? props : () => props
-  const { onAdded, onRemoved, onChange, ...otherProps } = getProps()
+  const { onAdded, onRemoved, onChange, ...otherProps } = props
   const {
     id, shape = 'rect',
     markup, attrs, zIndex, visible, data, parent: p,
@@ -142,7 +140,7 @@ export const useCell = (props) => {
 
 const Node: React.FC<{[key: string]: any}> = (props) => {
   const { children, ...otherProps } = props
-  const [cell, context] = useCell(() => otherProps)
+  const [cell, context] = useCell(otherProps)
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
@@ -151,7 +149,7 @@ const Node: React.FC<{[key: string]: any}> = (props) => {
 const Edge: React.FC<{[key: string]: any}> = (props) => {
   const { children, ...otherProps } = props
   // 默认给Edge一个默认的shape参数，否则回被初始化成Cell
-  const [cell, context] = useCell(() => ({shape: 'edge', ...otherProps}))
+  const [cell, context] = useCell({shape: 'edge', ...otherProps})
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
@@ -159,16 +157,29 @@ const Edge: React.FC<{[key: string]: any}> = (props) => {
 
 const ReactNode: React.FC<{[key: string]: any}> = (props) => {
   const { children, component, primer='rect', ...otherProps } = props
-  const Component = component ? component : () => children
+
+  // 使用一个内部的组件包裹一下，自动监听data变化
+  const ComponentClass = component ? component : () => children
+  const DataWatcher: React.FC<{[key: string]: any}> = (props) => {
+    const { node } = props
+    const [data, setData] = React.useState(node.getData())
+    React.useEffect(() => {
+      node.on('change:data', () => {
+        setData(node.getData())
+      })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    return <ComponentClass {...props} data={data} />
+  }
   const wrap = Portal.wrap
-  const [cell, context] = useCell(() => ({
+  const [cell, context] = useCell({
     ...otherProps,
     shape: 'html2',
     primer,
     // 使用Portal.wrap包裹一层变成mount + unmount模式
     // 自动按照是否挂载PortalProvider自动选择是否使用Portal模式
-    html: wrap(Component),
-  }))
+    html: wrap(DataWatcher),
+  })
   return cell.current ? <CellContext.Provider value={context}>
     {component && children}
   </CellContext.Provider> : null
