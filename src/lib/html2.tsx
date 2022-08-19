@@ -57,6 +57,58 @@ export namespace HTML2 {
         return Promise.reject('can not get hook')
       })
     }
+
+    // https://github.com/antvis/x6/blob/master/packages/x6-react-shape/src/view.ts
+    // onMouseUp: 避免被选中，x6里面的click是用onMouseUp来处理的
+    // onMouseDown: 避免被拖拽，拖拽的时候是以onMouseDown启动的
+    onMouseUp(e: JQuery.MouseDownEvent, x: number, y: number) {
+      return this.disableMouseDownEvent(super.onMouseUp.bind(this), e, x, y)
+    }
+    onMouseDown(e: JQuery.MouseDownEvent, x: number, y: number) {
+      return this.disableMouseDownEvent(super.onMouseDown.bind(this), e, x, y)
+    }
+    protected clickable(target: Element) {
+      if (!target || !target.tagName || target === this.selectors.foContent) {
+        return false
+      }
+      const tagName = target.tagName.toLowerCase()
+      const role = target.getAttribute('role')
+      const type = target.getAttribute('type')
+      const clickableTagNames = ['a', 'button']
+      return clickableTagNames.includes(tagName) || 'button' === role || 'button' === type || this.clickable(target.parentNode)
+    }
+    protected disableMouseDownEvent(
+      superEventHandler: (e: JQuery.MouseDownEvent, x: number, y: number) => void,
+      e: JQuery.MouseDownEvent,
+      x: number,
+      y: number
+    ) {
+      const target = e.target as Element
+      // focontent内部能点击的标签 a/button，不响应这个事件
+      if (this.clickable(target)) {
+        return
+      }
+      const tagName = target.tagName.toLowerCase()
+      if (tagName === 'input') {
+        const type = target.getAttribute('type')
+        if (
+          type == null ||
+          [
+            'text',
+            'password',
+            'number',
+            'email',
+            'search',
+            'tel',
+            'url',
+          ].includes(type)
+        ) {
+          return
+        }
+      }
+
+      superEventHandler(e, x, y)
+    }
   }
   
   NodeView.registry.register('html2-view', View, true)

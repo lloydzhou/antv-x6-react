@@ -8,17 +8,18 @@ import Graph, { Grid, Background, Clipboard, Keyboard, MouseWheel, Connecting } 
 import { Node, Edge, ReactNode } from './lib'
 import { Selection, MiniMap, ContextMenu, Portal } from './lib'
 
+import { InputNumber } from 'antd'
 
-function Node1(props) {
+function Node1(props: any) {
   const { node, data = {} } = props;
   const { num = 0 } = data;
   return (
-    <Button
-      onMouseDown={(e) => e.stopPropagation()}
-      onClick={(e) => node.setData({ num: num + 1 })}
-    >
-      Ant Button {num}
-    </Button>
+    <div style={{width: 150, border: '1px solid'}}>
+      <Button onClick={(e) => node.setData({ num: num + 1 })}>
+        Ant Button {num}
+      </Button>
+      <InputNumber defaultValue={num} />
+    </div>
   );
 }
 
