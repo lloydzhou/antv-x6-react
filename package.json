@@ -1,6 +1,6 @@
 {
   "name": "antv-x6-react",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "files": [
     "dist",
     "es",
@@ -15,7 +15,9 @@
   ],
   "main": "dist/index.js",
   "peerDependencies": {
-    "@antv/x6": "^1.33.1",
+    "@antv/x6": "^1.33.1"
+  },
+  "dependencies": {
     "antv-x6-html2": "^1.0.0"
   },
   "devDependencies": {
