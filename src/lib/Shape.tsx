@@ -2,8 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Node as X6Node, Edge as X6Edge, Shape, Cell as BaseShape } from '@antv/x6'
 import GraphContext, { CellContext } from './GraphContext';
-import './html2'
+import 'antv-x6-html2'
 import { Portal } from './portal'
+
+console.log(X6Node)
 
 export const useCellEvent = (name, handler, options={}) => {
   const { graph } = React.useContext(GraphContext);
