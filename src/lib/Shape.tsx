@@ -140,9 +140,18 @@ export const useCell = (props) => {
   return [cell, context]
 }
 
-const Cell: React.FC = (props) => {
+const Node: React.FC<{[key: string]: any}> = (props) => {
   const { children, ...otherProps } = props
   const [cell, context] = useCell(() => otherProps)
+  return cell.current ? <CellContext.Provider value={context}>
+    {children}
+  </CellContext.Provider> : null
+}
+
+const Edge: React.FC<{[key: string]: any}> = (props) => {
+  const { children, ...otherProps } = props
+  // 默认给Edge一个默认的shape参数，否则回被初始化成Cell
+  const [cell, context] = useCell(() => ({shape: 'edge', ...otherProps}))
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
@@ -165,22 +174,12 @@ const ReactNode: React.FC<{[key: string]: any}> = (props) => {
   </CellContext.Provider> : null
 }
 
-const Shapes = { Cell, ReactNode }
+const Cell = Node
+const Rect = Node
+const Shapes = { Node, Edge, Cell, ReactNode };
+// 除了Edge，其他的都直接使用Cell
+Object.keys(Shape).filter(n => n !== 'Edge').forEach(name => Shapes[name] = Node);
 
-Object.keys(Shape).forEach(name => {
-  const ShapeClass = Shape[name]
-  Shapes[name] = ((props) => {
-    const { shape: defaultShape } = ShapeClass.defaults || {}
-    const { children, shape=defaultShape, ...otherProps } = props
-    const [cell, context] = useCell(() => ({...otherProps, shape}))
-    return cell.current ? <CellContext.Provider value={context}>
-      {children}
-    </CellContext.Provider> : null
-  }) as React.FC
-})
-
-const { Rect, Edge } = Shapes
-const Node = Rect
 export {
   Shape,
   Cell,
