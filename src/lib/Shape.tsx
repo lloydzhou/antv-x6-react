@@ -5,7 +5,6 @@ import GraphContext, { CellContext } from './GraphContext';
 import 'antv-x6-html2'
 import { Portal } from './portal'
 
-console.log(X6Node)
 
 export const useCellEvent = (name, handler, options={}) => {
   const { graph } = React.useContext(GraphContext);

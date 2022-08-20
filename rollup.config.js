@@ -20,7 +20,7 @@ export default {
       },
     }
   ],
-  external: ['@antv/x6', 'react', 'react-dom'],
+  external: ['@antv/x6', 'react', 'react-dom', 'antv-x6-html2'],
   plugins: [
     typescript({ declaration: false }),
     resolve(),
