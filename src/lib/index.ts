@@ -4,7 +4,6 @@ import GraphContext, { CellContext, ContextMenuContext } from './GraphContext'
 import Shape, { Node, Rect, Edge, Cell, useCell, useCellEvent } from './Shape'
 import { Portal } from './portal'
 import { HTML2 } from 'antv-x6-html2'
-// import VueShape, { useVueShape, VueShapeProps, TeleportContainer } from './VueShape'
 // import Port, { PortGroup } from './Port'
 import Grid from './components/Grid'
 import Background from './components/Background'
@@ -28,8 +27,6 @@ export {
   Edge,
   Cell,
   useCell, useCellEvent,
-  // TeleportContainer,
-  // VueShape, useVueShape, VueShapeProps,
   Grid,
   Background,
   Clipboard,
