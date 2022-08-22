@@ -5,7 +5,15 @@ React components for building x6 editors
 
 ## 核心思想
 1. 由于[x6](https://www.npmjs.com/package/@antv/x6)主要面向编辑场景，所以对每一个节点有更多的交互逻辑。所以，将x6的Shape抽象成组件，每一个组件负责管理自己的生命周期。
-2. 针对复杂的自定义图形，利用x6支持渲染react组件[@antv/x6-react-shape](https://www.npmjs.com/package/@antv/x6-react-shape)的功能，节点渲染交给当前组件，将图形相关逻辑交给x6。
+2. 针对复杂的自定义图形，利用x6支持渲染html组件[antv-x6-html2](https://github.com/lloydzhou/antv-x6-html2)的功能，节点渲染交给当前组件，将图形相关逻辑交给x6。
+
+### Online Demos
+1. [基础示例](https://codesandbox.io/s/antv-x6-react-demo-jjvcv0)使用了`antd`的`InputNumber`（一个带按钮的输入框）展示了自定义组件如何做到和x6做数据交互
+2. [swimlane 泳道图](https://codesandbox.io/s/antv-x6-react-swimlane-uy01jp)参照`x6`官方示例实现
+3. [DAG画布](https://codesandbox.io/s/antv-x6-react-dag-m8vcgb)参照`x6`官方的DAG示例实现`AlgoNode`的节点逻辑与官方示例相比较处理起来更简单
+4. [ER图](https://codesandbox.io/s/antv-x6-react-er-demo-61m60o)参照`x6`官方的ER图示例
+5. [展开收起树形图](https://codesandbox.io/s/antv-x6-react-expand-tree-jfrnnz)参照`x6`官方的示例
+
 
 ## 安装
 ```
