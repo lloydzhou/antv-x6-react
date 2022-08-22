@@ -2,6 +2,7 @@
 import Graph from './Graph'
 import GraphContext, { CellContext, ContextMenuContext } from './GraphContext'
 import Shape, { Node, Rect, Edge, Cell, useCell, useCellEvent } from './Shape'
+import ReactNode from './ReactShape'
 import { Portal } from './portal'
 import { HTML2 } from 'antv-x6-html2'
 // import Port, { PortGroup } from './Port'
@@ -15,7 +16,6 @@ import Connecting from './components/Connecting'
 
 import Widgets from './widgets'
 const { Snapline, Selection, MiniMap, Stencil, StencilGroup, ContextMenu, useContextMenu } = Widgets
-const { ReactNode } = Shape
 const { View: HTML2View, Node: HTML2Shape } = HTML2
 
 export {

@@ -8,7 +8,7 @@ export interface GraphProps {
   children: React.ReactNode;
   width?: number;
   height?: number;
-  autoResize?: boolean;
+  resizing?: boolean;
   panning?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -19,7 +19,7 @@ const Graph: React.FC<GraphProps> = (props) => {
   const graphDOM = useRef<HTMLDivElement>()
   const isReady = useRef<boolean>(false)
 
-  const { width, height, autoResize, panning, children, ...otherOptions } = props
+  const { width, height, resizing, panning, children, ...otherOptions } = props
   useEffect(() => {
     const { clientWidth, clientHeight } = graphDOM.current
     const rwidth = Number(width) || clientWidth || 500;
@@ -28,7 +28,7 @@ const Graph: React.FC<GraphProps> = (props) => {
       container: graphDOM.current,
       width: rwidth,
       height: rheight,
-      autoResize: autoResize !== false,
+      resizing: resizing !== false,
       panning: panning !== false,
       ...otherOptions,
     }

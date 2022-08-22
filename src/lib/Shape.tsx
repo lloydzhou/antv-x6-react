@@ -2,8 +2,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Node as X6Node, Edge as X6Edge, Shape, Cell as BaseShape } from '@antv/x6'
 import GraphContext, { CellContext } from './GraphContext';
-import 'antv-x6-html2'
-import { Portal } from './portal'
 
 
 export const useCellEvent = (name, handler, options={}) => {
@@ -99,7 +97,7 @@ export const useCell = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   // 默认给组件绑定一个监听change:*的回调
-  useCellEvent('cell:change:*', ({ key, ...ev }) => onChange && onChange(ev), { cell })
+  useCellEvent('cell:change:*', (ev) => onChange && onChange(ev), { cell })
   // 监听其他变化
   // useWatchProps(cell, otherProps)
   useEffect(() => { markup !== undefined && cell.current.setMarkup(markup) }, [markup, cell])
@@ -156,39 +154,9 @@ const Edge: React.FC<{[key: string]: any}> = (props) => {
   </CellContext.Provider> : null
 }
 
-const ReactNode: React.FC<{[key: string]: any}> = (props) => {
-  const { children, component, primer='rect', ...otherProps } = props
-
-  // 使用一个内部的组件包裹一下，自动监听data变化
-  const ComponentClass = component ? component : () => children
-  const DataWatcher: React.FC<{[key: string]: any}> = (props) => {
-    const { node } = props
-    const [data, setData] = React.useState(node.getData())
-    React.useEffect(() => {
-      node.on('change:data', () => {
-        setData(node.getData())
-      })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    return <ComponentClass {...props} data={data} />
-  }
-  const wrap = Portal.wrap
-  const [cell, context] = useCell({
-    ...otherProps,
-    shape: 'html2',
-    primer,
-    // 使用Portal.wrap包裹一层变成mount + unmount模式
-    // 自动按照是否挂载PortalProvider自动选择是否使用Portal模式
-    html: wrap(DataWatcher),
-  })
-  return cell.current ? <CellContext.Provider value={context}>
-    {component && children}
-  </CellContext.Provider> : null
-}
-
 const Cell = Node
 const Rect = Node
-const Shapes = { Node, Edge, Cell, ReactNode };
+const Shapes = { Node, Edge, Cell };
 // 除了Edge，其他的都直接使用Cell
 Object.keys(Shape).filter(n => n !== 'Edge').forEach(name => Shapes[name] = Node);
 
