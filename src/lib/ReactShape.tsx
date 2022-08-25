@@ -26,8 +26,7 @@ export const useNodeSize = (props) => {
     }
   })
   React.useEffect(() => {
-    // 不触发change:size和change:position以及画布重绘
-    node.size({width, height}, { silent: true })
+    node.size({width, height})
   }, [width, height, node])
   return null
 }
