@@ -30,6 +30,8 @@ const PortalProvider = Portal.getProvider()
 const data = { num: 1 }
 
 function App() {
+  const nodeRef = React.useRef()
+  const edgeRef = React.useRef()
   return (
     <div className="App">
       {/* 只要这个被挂载了就能使用portal */}
@@ -51,10 +53,10 @@ function App() {
         }} />
         <ReactNode id="99" x="500" y="200" data={data} component={Node1} />
         <ReactNode id="9" x="500" y="300" data={data} component={Node1} primer="circle" />
-        <ReactNode id="1111" x="700" y="300" attrs={{rect: { stroke: '#333' }}}>
+        <ReactNode id="1111" x="700" y="300" attrs={{rect: { stroke: '#333' }}} nodeRef={nodeRef}>
           <div>hello react</div>
         </ReactNode>
-        <Edge source="1" target="2" />
+        <Edge source="1" target="2" edgeRef={edgeRef} />
         <ContextMenu>
           <Menu style={{background: '#fff'}}>
             <Menu.Item>菜单1</Menu.Item>

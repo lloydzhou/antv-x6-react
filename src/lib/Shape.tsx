@@ -138,17 +138,21 @@ export const useCell = (props) => {
 }
 
 const Node: React.FC<{[key: string]: any}> = (props) => {
-  const { children, ...otherProps } = props
+  const { children, nodeRef, ...otherProps } = props
   const [cell, context] = useCell(otherProps)
+  const { graph } = React.useContext(GraphContext)
+  React.useImperativeHandle(nodeRef, () => ({node: cell.current, graph}))
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null
 }
 
 const Edge: React.FC<{[key: string]: any}> = (props) => {
-  const { children, ...otherProps } = props
+  const { children, edgeRef, ...otherProps } = props
   // 默认给Edge一个默认的shape参数，否则回被初始化成Cell
   const [cell, context] = useCell({shape: 'edge', ...otherProps})
+  const { graph } = React.useContext(GraphContext)
+  React.useImperativeHandle(edgeRef, () => ({edge: cell.current, graph}))
   return cell.current ? <CellContext.Provider value={context}>
     {children}
   </CellContext.Provider> : null

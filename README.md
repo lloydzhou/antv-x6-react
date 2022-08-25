@@ -80,21 +80,26 @@ import Graph, { Grid, Background, Clipboard, Keyboard, MouseWheel, Connecting } 
 import { Node, Edge, ReactNode } from './lib'
 import { Selection, MiniMap, ContextMenu, Portal } from './lib'
 
+
 function Node1(props: any) {
-  const { node } = props
-  const [num, setNum] = React.useState(0)
-  React.useEffect(() => {
-    node.on('change:data', () => setNum(node.getData().num))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  
-  return <Button onMouseDown={e => e.stopPropagation()} onClick={e => node.setData({ num: num + 1 })}>Ant Button {num}</Button>
+  // 自动按照内部节点大小更新x6节点大小
+  useNodeSize(props)
+  const { node, data = {} } = props;
+  const { num = 0 } = data;
+  return (
+    <div style={{width: 150, border: '1px solid'}}>
+      <Button onClick={(e) => node.setData({ num: num + 1 })}>
+        Ant Button {num}
+      </Button>
+      <InputNumber value={num} onChange={num => node.setData({ num })} />
+    </div>
+  );
 }
 
 function App() {
   return (
     <div className="App">
-      {/* 内部会自动判断，只要这个组件被挂载了就使用portal模式，否则使用ReactDOM */}
+      {/* 内部会自动判断，只要这个组件被挂载了就使用portal模式，否则使用ReactDOM.render */}
       <PortalProvider />
       <Graph>
         <Grid />

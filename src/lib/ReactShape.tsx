@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { CellContext } from './GraphContext';
+import GraphContext, { CellContext } from './GraphContext';
 import 'antv-x6-html2'
 import { useCell } from './Shape'
 import { Portal } from './portal'
@@ -14,7 +14,7 @@ export const useNodeSize = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     const view = graph.findViewByCell(node)
-    console.log('node', node, 'view', view)
+    // console.log('node', node, 'view', view)
     if (view) {
       const container = view.selectors.foContent
       if (container && container.firstChild) {
@@ -32,7 +32,7 @@ export const useNodeSize = (props) => {
 }
 
 const ReactNode: React.FC<{[key: string]: any}> = (props) => {
-  const { children, component, primer='rect', ...otherProps } = props
+  const { children, component, primer='rect', nodeRef, ...otherProps } = props
 
   // 使用一个内部的组件包裹一下，自动监听data变化
   const ComponentClass = component ? component : () => children
@@ -47,15 +47,16 @@ const ReactNode: React.FC<{[key: string]: any}> = (props) => {
     }, [])
     return <ComponentClass {...props} data={data} />
   }
-  const wrap = Portal.wrap
   const [cell, context] = useCell({
     ...otherProps,
     shape: 'html2',
     primer,
     // 使用Portal.wrap包裹一层变成mount + unmount模式
     // 自动按照是否挂载PortalProvider自动选择是否使用Portal模式
-    html: wrap(DataWatcher),
+    html: Portal.wrap(DataWatcher),
   })
+  const { graph } = React.useContext(GraphContext)
+  React.useImperativeHandle(nodeRef, () => ({node: cell.current, graph}))
   return cell.current ? <CellContext.Provider value={context}>
     {component && children}
   </CellContext.Provider> : null
