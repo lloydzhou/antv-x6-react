@@ -32,7 +32,7 @@ const data = { num: 1 }
 function App() {
   return (
     <div className="App">
-      {/* 只要这个被挂载了 */}
+      {/* 只要这个被挂载了就能使用portal */}
       <PortalProvider />
       <Graph>
         <Grid />
@@ -51,6 +51,9 @@ function App() {
         }} />
         <ReactNode id="99" x="500" y="200" data={data} component={Node1} />
         <ReactNode id="9" x="500" y="300" data={data} component={Node1} primer="circle" />
+        <ReactNode id="1111" x="700" y="300" attrs={{rect: { stroke: '#333' }}}>
+          <div>hello react</div>
+        </ReactNode>
         <Edge source="1" target="2" />
         <ContextMenu>
           <Menu style={{background: '#fff'}}>
