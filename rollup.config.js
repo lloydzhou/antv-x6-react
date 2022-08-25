@@ -17,6 +17,7 @@ export default {
         react: 'React',
         'react-dom': 'ReactDom',
         '@antv/x6': 'X6',
+        'antv-x6-html2': 'antvX6Html2',
       },
     }
   ],

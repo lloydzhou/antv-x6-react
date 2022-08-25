@@ -50,6 +50,7 @@ Shape.ShadowEdge | shadow-edge | 阴影边。
  -- | --
 useCell | 使用这个函数可以通过传递markup之类的参数自定义节点
 useCellEvent | 通过这个函数绑定事件到cell上面
+useNodeSize | 通过这个函数可以按照react节点内部渲染的大小调整节点大小
 
 
 - [x] 提供内置的一些组件
