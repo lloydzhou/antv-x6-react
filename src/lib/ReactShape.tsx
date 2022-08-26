@@ -4,30 +4,31 @@ import GraphContext, { CellContext } from './GraphContext';
 import 'antv-x6-html2'
 import { useCell } from './Shape'
 import { Portal } from './portal'
+import { addListener, removeListener } from "resize-detector";
+import { debounce } from './utils'
 
 
 export const useNodeSize = (props) => {
   const { node, graph } = props
-  const { width: w, height: h } = node.getSize()
-  const [width, setWidth] = React.useState(w)
-  const [height, setHeight] = React.useState(h)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const resizeListener = debounce((e) => {
+    const { width, height } = e.getBoundingClientRect()
+    node.size({width, height})
+  })
   React.useEffect(() => {
     const view = graph.findViewByCell(node)
-    // console.log('node', node, 'view', view)
     if (view) {
       const container = view.selectors.foContent
       if (container && container.firstChild) {
-        const { width, height } = container.firstChild.getBoundingClientRect()
-        // 这里使用useState，会自动判断是否变化
-        setWidth(width)
-        setHeight(height)
+        const root = container.firstChild
+        resizeListener(root)
+        addListener(root, resizeListener)
+        return () => {
+          removeListener(root, resizeListener)
+        }
       }
     }
-  })
-  React.useEffect(() => {
-    node.size({width, height})
-  }, [width, height, node])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return null
 }
 

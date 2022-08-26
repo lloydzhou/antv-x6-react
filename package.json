@@ -18,7 +18,8 @@
     "@antv/x6": "^1.33.1"
   },
   "dependencies": {
-    "antv-x6-html2": "^1.0.0"
+    "antv-x6-html2": "^1.0.0",
+    "resize-detector": "^0.3.0"
   },
   "devDependencies": {
     "@antv/x6": "^1.33.1",
