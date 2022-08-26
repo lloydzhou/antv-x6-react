@@ -2636,10 +2636,10 @@ antd@^4.22.6:
     rc-util "^5.22.5"
     scroll-into-view-if-needed "^2.2.25"
 
-antv-x6-html2@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/antv-x6-html2/-/antv-x6-html2-1.0.0.tgz#bf02ce41a2ca508dc17f45a610141910f6dbeb06"
-  integrity sha512-64UNmmzABWACFXLwve9BOwDNB+MpVoyunKSytn35csIdZFyMSeOzCthgy2kP4/b2uR/OyW4gF766ZnXmyueuKQ==
+antv-x6-html2@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/antv-x6-html2/-/antv-x6-html2-1.0.6.tgz#f2dae65c2e49e6a3a2132f29601056c8d9e10928"
+  integrity sha512-39Vl1qHPhh+9rNXQYzKH0G8T/GTVi0/ocRdbKBf97NB6Py6JhIXXyEdnLJqCvwiAMPqf8j1G+KCjQXNEHOmCfw==
 
 anymatch@^3.0.3, anymatch@~3.1.2:
   version "3.1.2"

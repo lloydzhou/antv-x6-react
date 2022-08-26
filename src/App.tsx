@@ -6,13 +6,9 @@ import './App.css';
 import Graph, { Grid, Background, Clipboard, Keyboard, MouseWheel, Connecting } from './lib'
 import { Node, Edge, ReactNode } from './lib'
 import { Selection, MiniMap, ContextMenu, Portal } from './lib'
-
-import { useNodeSize } from './lib/ReactShape'
-
 import { InputNumber } from 'antd'
 
 function Node1(props: any) {
-  useNodeSize(props)
   const { node, data = {} } = props;
   const { num = 0 } = data;
   return (
