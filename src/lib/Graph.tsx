@@ -49,7 +49,7 @@ const Graph: React.FC<GraphProps> = (props) => {
         context.graph.resize(width, height)
       }
     })
-    if (autoResize && graphDOM.current) {
+    if (autoResize !== false && graphDOM.current) {
       const root = graphDOM.current.parentNode
       resizeListener(root)
       addListener(root, resizeListener)
