@@ -20,10 +20,10 @@ const ReactNode: React.FC<{[key: string]: any}> = (props) => {
       node.on('change:data', () => {
         setData(node.getData())
       })
-      if (autoResize && root.current && node.model && node.model.graph.view.cid === graph.view.cid) {
+      if (autoResize !== false && root.current && node.model && node.model.graph.view.cid === graph.view.cid) {
         const resizeListener = debounce((e) => {
-          const { width, height } = e.getBoundingClientRect()
-          node.size({width, height})
+          const { width, height } = getComputedStyle(e)
+          node.size({width: parseFloat(width), height: parseFloat(height)})
         })
         resizeListener(root.current)
         addListener(root.current, resizeListener)
